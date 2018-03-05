@@ -1,9 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Version_1_C
@@ -18,22 +13,22 @@ namespace Version_1_C
             InitializeComponent();
         }
 
-        private clsArtistList theArtistList = new clsArtistList();
+        private clsArtistList _ArtistList = new clsArtistList();
         private const string fileName = "gallery.xml";
 
         private void UpdateDisplay()
         {
-            string[] lcDisplayList = new string[theArtistList.Count];
+            string[] lcDisplayList = new string[_ArtistList.Count];
 
             lstArtists.DataSource = null;
-            theArtistList.Keys.CopyTo(lcDisplayList, 0);
+            _ArtistList.Keys.CopyTo(lcDisplayList, 0);
             lstArtists.DataSource = lcDisplayList;
-            lblValue.Text = Convert.ToString(theArtistList.GetTotalValue());
+            lblValue.Text = Convert.ToString(_ArtistList.GetTotalValue());
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            theArtistList.NewArtist();
+            _ArtistList.NewArtist();
             UpdateDisplay();
         }
 
@@ -44,7 +39,7 @@ namespace Version_1_C
             lcKey = Convert.ToString(lstArtists.SelectedItem);
             if (lcKey != null)
             {
-                theArtistList.EditArtist(lcKey);
+                _ArtistList.EditArtist(lcKey);
                 UpdateDisplay();
             }
         }
@@ -63,7 +58,7 @@ namespace Version_1_C
             if (lcKey != null)
             {
                 lstArtists.ClearSelected();
-                theArtistList.Remove(lcKey);
+                _ArtistList.Remove(lcKey);
                 UpdateDisplay();
             }
         }
@@ -76,7 +71,7 @@ namespace Version_1_C
                 System.Runtime.Serialization.Formatters.Soap.SoapFormatter lcFormatter =
                     new System.Runtime.Serialization.Formatters.Soap.SoapFormatter();
 
-                lcFormatter.Serialize(lcFileStream, theArtistList);
+                lcFormatter.Serialize(lcFileStream, _ArtistList);
                 lcFileStream.Close();
             }
             catch (Exception e)
@@ -93,7 +88,7 @@ namespace Version_1_C
                 System.Runtime.Serialization.Formatters.Soap.SoapFormatter lcFormatter =
                     new System.Runtime.Serialization.Formatters.Soap.SoapFormatter();
 
-                theArtistList = (clsArtistList)lcFormatter.Deserialize(lcFileStream);
+                _ArtistList = (clsArtistList)lcFormatter.Deserialize(lcFileStream);
                 UpdateDisplay();
                 lcFileStream.Close();
             }
