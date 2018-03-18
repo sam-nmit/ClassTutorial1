@@ -14,7 +14,7 @@ namespace Version_1_C
         }
 
         private clsArtistList _ArtistList = new clsArtistList();
-        private const string fileName = "gallery.xml";
+        
 
         private void UpdateDisplay()
         {
@@ -46,7 +46,7 @@ namespace Version_1_C
 
         private void btnQuit_Click(object sender, EventArgs e)
         {
-            Save();
+            _ArtistList.Save();
             Close();
         }
 
@@ -63,45 +63,11 @@ namespace Version_1_C
             }
         }
 
-        private void Save()
-        {
-            try
-            {
-                System.IO.FileStream lcFileStream = new System.IO.FileStream(fileName, System.IO.FileMode.Create);
-                System.Runtime.Serialization.Formatters.Soap.SoapFormatter lcFormatter =
-                    new System.Runtime.Serialization.Formatters.Soap.SoapFormatter();
-
-                lcFormatter.Serialize(lcFileStream, _ArtistList);
-                lcFileStream.Close();
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message, "File Save Error");
-            }
-        }
-
-        private void Retrieve()
-        {
-            try
-            {
-                System.IO.FileStream lcFileStream = new System.IO.FileStream(fileName, System.IO.FileMode.Open);
-                System.Runtime.Serialization.Formatters.Soap.SoapFormatter lcFormatter =
-                    new System.Runtime.Serialization.Formatters.Soap.SoapFormatter();
-
-                _ArtistList = (clsArtistList)lcFormatter.Deserialize(lcFileStream);
-                UpdateDisplay();
-                lcFileStream.Close();
-            }
-
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message, "File Retrieve Error");
-            }
-        }
+     
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-            Retrieve();
+            _ArtistList = clsArtistList.Retrieve();
             UpdateDisplay();
         }
     }
